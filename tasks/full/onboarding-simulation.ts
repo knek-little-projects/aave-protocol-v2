@@ -9,6 +9,13 @@ task('onboarding-simulation', 'Simulate some scenarios')
   .setAction(async ({ }, localBRE) => {
 
     await localBRE.run('set-DRE');
+    // const coinHelper = require("../../helpers/coins");
+    // const compHelper = coinHelper.get("COMP")
+    // const comp = await getMintableERC20(compHelper.address)
+    // const signers = await (await getEthersSigners())
+    // await compHelper.setBalance(await signers[0].getAddress(), parseEther("111.0"))
+    // console.log(await comp.balanceOf(await signers[0].getAddress()))
+
     await localBRE.run('aave:mainnet');
 
     const addressProvider = await getLendingPoolAddressesProvider()
@@ -25,7 +32,7 @@ task('onboarding-simulation', 'Simulate some scenarios')
     const users = [signers[0], signers[1]]
 
     const coinHelper = require("../../helpers/coins");
-    const coinList = ["USDC", "WETH"]
+    const coinList = ["USDC", "WETH", "COMP"]
     const coins: any = {}
 
     for (const u of users) {
@@ -33,7 +40,7 @@ task('onboarding-simulation', 'Simulate some scenarios')
         const h = await coinHelper.get(c)
         await h.setBalance(await u.getAddress(), parseEther("1111111111.0"))
         coins[c] = await getMintableERC20(h.address)
-        await coins[c].connect(u).approve(pool.address, parseEther('111111111111.0'));
+        await coins[c].connect(u).approve(pool.address, parseEther('79228162514.0'));
       }
     }
 
@@ -46,9 +53,11 @@ task('onboarding-simulation', 'Simulate some scenarios')
     await pool.connect(users[0]).setUserUseReserveAsCollateral(coins.USDC.address, false)
     await pool.connect(users[0]).deposit(coins.WETH.address, parseEther('111111111.0'), await users[0].getAddress(), 0);
     await pool.connect(users[0]).setUserUseReserveAsCollateral(coins.WETH.address, false)
+    await pool.connect(users[0]).deposit(coins.COMP.address, parseEther('111111111.0'), await users[0].getAddress(), 0);
+    await pool.connect(users[0]).setUserUseReserveAsCollateral(coins.WETH.address, false)
 
     console.log("user2: depositing in the pool")
-    await pool.connect(users[1]).deposit(coins.WETH.address, parseEther("1.0"), await users[1].getAddress(), 0)
+    await pool.connect(users[1]).deposit(coins.WETH.address, parseEther("111.0"), await users[1].getAddress(), 0)
     await pool.connect(users[1]).setUserUseReserveAsCollateral(coins.WETH.address, true)
 
     console.log("user2: borrowing")
@@ -62,9 +71,9 @@ task('onboarding-simulation', 'Simulate some scenarios')
 
     await pool.connect(users[1]).flashLoan(
       _mockFlashLoanReceiver.address,
-      [coins.USDC.address],
-      [flashloanAmount],
-      [0],
+      [coins.USDC.address, coins.COMP.address],
+      [flashloanAmount, flashloanAmount],
+      [0, 0],
       await users[1].getAddress(),
       '0x10',
       '0'

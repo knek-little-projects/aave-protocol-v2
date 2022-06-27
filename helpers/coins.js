@@ -14,6 +14,10 @@ const metadata = {
     address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     balanceSlot: 2,
   },
+  COMP: {
+    address: "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+    balanceSlot: 1,
+  },
   ENJ: {
     address: '0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c',
   },
