@@ -91,18 +91,30 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
         collateralManagerAddress
       );
       const aaveProtocolDataProvider = await getAaveProtocolDataProvider();
+      console.log("QWE 1")
+
       await waitForTx(
         await addressesProvider.setAddress(
           '0x0100000000000000000000000000000000000000000000000000000000000000',
           aaveProtocolDataProvider.address
         )
       );
+      console.log("QWE 2")
 
       await deployWalletBalancerProvider(verify);
-
+      console.log("QWE 3")
+      console.log("localBRE.network.name", localBRE.network.name)
+      console.log("chainlinkAggregatorProxy", chainlinkAggregatorProxy)
+      console.log("chainlinkEthUsdAggregatorProxy", chainlinkEthUsdAggregatorProxy)
+      console.log(
+        `deployUiPoolDataProviderV2`,
+        chainlinkAggregatorProxy[localBRE.network.name] || chainlinkAggregatorProxy["main"],
+        chainlinkEthUsdAggregatorProxy[localBRE.network.name] || chainlinkEthUsdAggregatorProxy["main"],
+        verify,
+      )
       const uiPoolDataProvider = await deployUiPoolDataProviderV2(
-        chainlinkAggregatorProxy[localBRE.network.name],
-        chainlinkEthUsdAggregatorProxy[localBRE.network.name],
+        chainlinkAggregatorProxy[localBRE.network.name] || chainlinkAggregatorProxy["main"],
+        chainlinkEthUsdAggregatorProxy[localBRE.network.name] || chainlinkEthUsdAggregatorProxy["main"],
         verify
       );
       console.log('UiPoolDataProvider deployed at:', uiPoolDataProvider.address);

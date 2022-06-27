@@ -45,13 +45,13 @@ task('aave:mainnet', 'Deploy development enviroment')
       await DRE.run('verify:tokens', { pool: POOL_NAME });
     }
 
-    if (usingTenderly()) {
-      const postDeployHead = DRE.tenderlyNetwork.getHead();
-      const postDeployFork = DRE.tenderlyNetwork.getFork();
-      console.log('Tenderly Info');
-      console.log('- Head', postDeployHead);
-      console.log('- Fork', postDeployFork);
-    }
+    // if (usingTenderly()) {
+    //   const postDeployHead = DRE.tenderlyNetwork.getHead();
+    //   const postDeployFork = DRE.tenderlyNetwork.getFork();
+    //   console.log('Tenderly Info');
+    //   console.log('- Head', postDeployHead);
+    //   console.log('- Fork', postDeployFork);
+    // }
     console.log('\nFinished migrations');
     printContracts();
   });

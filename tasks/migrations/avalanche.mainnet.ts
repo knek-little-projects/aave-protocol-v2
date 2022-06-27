@@ -2,7 +2,7 @@ import { task } from 'hardhat/config';
 import { checkVerification } from '../../helpers/etherscan-verification';
 import { ConfigNames } from '../../helpers/configuration';
 import { printContracts } from '../../helpers/misc-utils';
-import { usingTenderly } from '../../helpers/tenderly-utils';
+// import { usingTenderly } from '../../helpers/tenderly-utils';
 
 task('avalanche:mainnet', 'Deploy market at avalanche')
   .addParam('pool', `Market pool configuration, one of ${Object.keys(ConfigNames)}`)
@@ -48,13 +48,13 @@ task('avalanche:mainnet', 'Deploy market at avalanche')
       await DRE.run('verify:tokens', { pool: POOL_NAME });
     }
 
-    if (usingTenderly()) {
-      const postDeployHead = DRE.tenderlyNetwork.getHead();
-      const postDeployFork = DRE.tenderlyNetwork.getFork();
-      console.log('Tenderly Info');
-      console.log('- Head', postDeployHead);
-      console.log('- Fork', postDeployFork);
-    }
+    // if (usingTenderly()) {
+    //   const postDeployHead = DRE.tenderlyNetwork.getHead();
+    //   const postDeployFork = DRE.tenderlyNetwork.getFork();
+    //   console.log('Tenderly Info');
+    //   console.log('- Head', postDeployHead);
+    //   console.log('- Fork', postDeployFork);
+    // }
     console.log('\nFinished migrations');
     printContracts();
   });
